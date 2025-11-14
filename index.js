@@ -1,13 +1,17 @@
+import { google } from 'googleapis';
 import express from "express";
 import cron from "node-cron";
 import dotenv from "dotenv";
 import axios from "axios";
-import { google } from 'googleapis'
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 4000;
 
+app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 4000;
 const Backends = process.env.BACKENDS?.split(",") || [];
 
 // Envio de emails
@@ -48,7 +52,7 @@ async function sendMail({ to, subject, html }) {
     oAuth2Client.setCredentials({ refresh_token: process.env.DESKTOP_REFRESH_TOKEN });
 
     const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
-    const raw = makeRawMessage(to, process.env.GMAIL_USER, subject, html);
+    const raw = makeRawMessage(to, process.env.SENDER_EMAIL, subject, html);
 
     const res = await gmail.users.messages.send({
       userId: 'me',
@@ -65,10 +69,10 @@ async function sendMail({ to, subject, html }) {
 
 // Rota que o cron-job.org vai pingar
 app.get("/keep-alive", (req, res) => {
-  res.status(200).send("✅ PingServer ativo e mantendo backends!");
+  res.status(200).send("PingServer ativo e mantendo backends!");
 });
 app.post("/keep-alive", (req, res) => {
-  res.status(200).send("✅ PingServer ativo e mantendo backends!");
+  res.status(200).send("PingServer ativo e mantendo backends!");
 });
   
 
