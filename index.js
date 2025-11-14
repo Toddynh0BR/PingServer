@@ -68,10 +68,10 @@ async function sendMail({ to, subject, html }) {
 
 
 // Rota que o cron-job.org vai pingar
-app.get("/keep-alive", (req, res) => {
+app.get("/ping", (req, res) => {
   res.status(200).send("PingServer ativo e mantendo backends!");
 });
-app.post("/keep-alive", (req, res) => {
+app.post("/ping", (req, res) => {
   res.status(200).send("PingServer ativo e mantendo backends!");
 });
   
