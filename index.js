@@ -69,10 +69,10 @@ async function sendMail({ to, subject, html }) {
 
 // Rota que o cron-job.org vai pingar
 app.get("/ping", (req, res) => {
-  res.status(200).send("PingServer ativo e mantendo backends!");
+ res.status(204).json({message: 'PingServer ativo e mantendo backends!'});
 });
 app.post("/ping", (req, res) => {
-  res.status(200).send("PingServer ativo e mantendo backends!");
+  res.status(204).json({message: 'PingServer ativo e mantendo backends!'});
 });
   
 
@@ -114,7 +114,6 @@ async function PingServer(url, retry = 0) {
     return;
   }
 };
-
 
 // Cron interno que roda a cada 9 minutos
 cron.schedule("*/9 * * * *", async () => {
